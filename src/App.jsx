@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from './Card';
 
 async function getRandomPokemon(){
@@ -21,11 +21,18 @@ function getRandomElements(array, count){
   return shuffled.slice(0, count);
 }
 
-const randomPokemon = await getRandomPokemon();
-
-
 export default function App(){
-    const [currentPokemons, nextPokemons] = useState(randomPokemon);
+    const [currentPokemons, nextPokemons] = useState([]);
+
+    useEffect(() =>{
+        async function getPokemonArray(){
+            const randomPokemon = await getRandomPokemon();
+            nextPokemons(randomPokemon);
+        }
+
+        getPokemonArray();
+    }, []);
+
     const [score, nextScore] = useState(0);
     const [bestScore, nextBestScore] = useState(0);
     return(
